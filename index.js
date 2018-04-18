@@ -6,14 +6,18 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 const mongo = 'mongodb://localhost/minhas-series'
-const indexRoutes = require('./routes/indexRoute')
+const pagesRoutes = require('./routes/pagesRoutes')
+const seriesRoutes = require('./routes/seriesRoutes')
+
 // Express configs
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // Routes 
-app.use('/', indexRoutes)
+app.use('/', pagesRoutes)
+app.use('/series', seriesRoutes)
 
 // Start server
 mongoose
