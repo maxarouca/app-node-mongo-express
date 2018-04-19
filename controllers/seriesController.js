@@ -12,46 +12,37 @@ const labels = [{
   }
 ]
 
-const indexSerie = ({ Serie }, req, res) => {
-  Serie.find({}, (err, docs) => {
-    res.render('series/index', { series: docs, labels })
-  })
+const indexSerie = async ({ Serie }, req, res) => {
+  const docs = await Serie.find({})
+  res.render('series/index', { series: docs, labels })
 }
 
 const newSerie = (req, res) => {
   res.render('series/new')
 }
 
-const newSerieProcess = ({ Serie }, req, res) => {
+const newSerieProcess = async ({ Serie }, req, res) => {
   const serie = new Serie(req.body)
-  serie.save(() => res.redirect('/series'))
+  await serie.save()
+  res.redirect('/series')
 }
 
-const updateSerie = ({ Serie }, req, res) => {  
-  Serie.findOne({
-    _id: req.params.id
-  }, (err, serie) => {
-    res.render('series/update', { serie, labels })
-  })
+const updateSerie = async ({ Serie }, req, res) => {  
+  const serie = await Serie.findOne({ _id: req.params.id })
+  res.render('series/update', { serie, labels })
 }
 
-const updateSerieProcess = ({ Serie }, req, res) => {
-
-  Serie.findOne({
-    _id: req.params.id
-  },
-  (err, serie) => {
-    serie.name = req.body.name
-    serie.status = req.body.status
-    serie.save()
-    res.redirect('/series')
-  })
+const updateSerieProcess = async ({ Serie }, req, res) => {
+  const serie = await Serie.findOne({ _id: req.params.id })
+  serie.name = req.body.name
+  serie.status = req.body.status
+  await serie.save()
+  res.redirect('/series')
 }
 
-const deleteSerie = ({ Serie }, req, res) => {
-  Serie.remove({
-    _id: req.params.id
-  }, () => res.redirect('/series'))
+const deleteSerie = async ({ Serie }, req, res) => {
+  await Serie.remove({ _id: req.params.id })
+  res.redirect('/series')
 }
 
 
