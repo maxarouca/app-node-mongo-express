@@ -13,11 +13,34 @@
           <div class="col-lg-8 mx-auto">
             <h2>Séries</h2>
             <p class="lead"><a href="/series/new" class="btn btn-info">Adicionar série</a></p>
-            <ul>
+            <table class="table table-bordered table-hover table-striped">
+              <thead>
+                <th>Nome da Série</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </thead>
+              <tbody>
               <% series.forEach( serie => { %>
-                <li><strong><%= serie.name %></strong> | <%= serie.status %></li>
+                <tr>
+                  <td><%= serie.name %></td>
+                  <td>
+                    <% labels.forEach(label => { %>
+
+                      <% if(label.id === serie.status ) { %>
+                        <%= label.name%>
+                      <% } %>
+                      
+                    <% }) %>
+
+                  </td>
+                  <td>
+                    <a href="/series/update/<%= serie._id%>" class="btn btn-info">Atualizar</a>
+                    <a href="/series/delete/<%= serie._id%>" class="btn btn-danger">Excluir</a>
+                  </td>
+                </tr>
               <% }) %>
-            </ul>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
